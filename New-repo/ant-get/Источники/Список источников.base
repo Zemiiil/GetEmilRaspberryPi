@@ -1,0 +1,16 @@
+views:
+  - type: table
+    name: Table
+    filters:
+      and:
+        - file.inFolder("Источники")
+        - '!file.name.endsWith(".base")'
+    order:
+      - file.name
+      - автор
+      - год
+      - издетельство
+    sort: []
+    columnSize:
+      note.автор: 218
+      note.год: 90

@@ -1,0 +1,21 @@
+properties:
+  file.name:
+    displayName: задание
+views:
+  - type: table
+    name: Table
+    filters:
+      and:
+        - file.hasProperty("задание")
+    order:
+      - file.name
+      - тема
+      - дата
+      - задание
+    sort:
+      - property: тема
+        direction: ASC
+    columnSize:
+      file.name: 361
+      note.тема: 262
+      note.дата: 139

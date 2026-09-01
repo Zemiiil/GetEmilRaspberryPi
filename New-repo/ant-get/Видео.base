@@ -1,0 +1,15 @@
+views:
+  - type: table
+    name: Table
+    filters:
+      and:
+        - file.hasProperty("видео")
+    order:
+      - file.name
+      - тема
+      - дата
+      - видео
+    columnSize:
+      file.name: 323
+      note.тема: 281
+      note.дата: 136
