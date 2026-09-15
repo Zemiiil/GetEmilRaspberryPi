@@ -13,20 +13,21 @@ def dec2bin(value):
     return [int(element) for element in bin(value) [2:].zfill(8)]
 sleep_time=0.2
 while True:
-    if GPIO.input(plus):
-        if GPIO.input(minus):
-            num=255
-            print(num, dec2bin(num))
-            time.sleep(sleep_time)
-            GPIO.output(leds, dec2bin(num))
-            continue
-    if GPIO.input(plus):
+    a=GPIO.input(plus)
+    b=GPIO.input(minus)
+    if a and b:
+        num=255
+        print(num, dec2bin(num))
+        time.sleep(sleep_time)
+        GPIO.output(leds, dec2bin(num))
+        continue
+    if a:
         num+=1
         if num>255:
             num=0
         print(num, dec2bin(num))
         time.sleep(sleep_time)
-    if GPIO.input(minus):
+    if b:
         num-=1
         if num <0:
             num=0
