@@ -12,9 +12,9 @@ def voltage_to_number (voltage):
         return 0
     return int(voltage/dynamic_range *255)
 def number_to_dac(number):
-    for i, pin in enumerate(dac_bits):
-        bit=(number>>i)&1
-        GPIO.output(pin, bit)
+    bits = [int(element) for element in bin(number)[2:].zfill(8)]
+    GPIO.output(dac_bits, bits)
+    return bits
     
 
 try:
