@@ -6,7 +6,6 @@ class R2R_DAC:
         self.gpio_bits = gpio_bits
         self.dynamic_range = dynamic_range
         self.verbose = verbose
-
         GPIO.setmode(GPIO.BCM)
         GPIO.setup(self.gpio_bits, GPIO.OUT, initial=0)
 
@@ -17,7 +16,6 @@ class R2R_DAC:
     def set_number(self, number):
         bits = [int(element) for element in bin(number)[2:].zfill(8)]
         GPIO.output(self.gpio_bits, bits)
-
         if self.verbose:
             print(f"Число на вход ЦАП: {number}, биты: {bits}")
 
@@ -34,11 +32,10 @@ class R2R_DAC:
         if self.verbose:
             print(f"Напряжение: {voltage:.3f} В, ожидаемое на выходе: {number / 255 * self.dynamic_range:.3f} В")
 
-
 if __name__ == "__main__":
     dac = None
     try:
-        dac = R2R_DAC([16, 20, 21, 25, 26, 17, 27, 22], 3.183, True)
+        dac = R2R_DAC([16, 20, 21, 25, 26, 17, 27, 22], 3.16, True)
 
         while True:
             try:

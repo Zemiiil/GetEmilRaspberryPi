@@ -45,7 +45,7 @@ class PWM_DAC:
 
 if __name__ == "__main__":
     try:
-        dac = PWM_DAC(12, 500, 3.290, True)
+        dac = PWM_DAC(12, 10, 3.298, True)
 
         while True:
             try:
