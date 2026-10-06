@@ -21,6 +21,7 @@ class PWM_DAC:
             )
 
     def deinit(self):
+        self.pwm.ChangeDutyCycle(0)
         self.pwm.stop()
         GPIO.cleanup()
 
