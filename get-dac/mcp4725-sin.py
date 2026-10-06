@@ -1,4 +1,4 @@
-import mcp4725_ddriver as mcp
+import mcp4725_driver as mcp
 import signal_generator as sg
 import time
 
