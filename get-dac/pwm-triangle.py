@@ -10,7 +10,7 @@ pwm_frequency = 500
 dynamic_range = 3.298
 
 try:
-    dac = pwm.PWM_DAC( gpio_pin, pwm_frequency, dynamic_range, True )
+    dac = pwm.PWM_DAC( gpio_pin, pwm_frequency, dynamic_range, False )
 
     start_time = time.time()
 
@@ -27,6 +27,7 @@ try:
         dac.set_voltage(voltage)
 
         sg.wait_for_sampling_period(sampling_frequency)
-
+except KeyboardInterrupt:
+    print("\nПограмма завершилась")
 finally:
     dac.deinit()

@@ -8,7 +8,7 @@ sampling_frequency = 1000
 gpio_bits = [16, 20, 21, 25, 26, 17, 27, 22]
 
 try:
-    dac = r2r.R2R_DAC(gpio_bits, 3.3, True)
+    dac = r2r.R2R_DAC(gpio_bits, 3.3, False)
 
     start_time = time.time()
 
@@ -25,6 +25,7 @@ try:
         dac.set_voltage(voltage)
 
         sg.wait_for_sampling_period(sampling_frequency)
-
+except KeyboardInterrupt:
+    print("\nПограмма завершилась")
 finally:
     dac.deinit()

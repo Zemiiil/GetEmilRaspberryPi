@@ -1,4 +1,4 @@
-import RPi.GPIO as GPIO
+
 import smbus
 
 class MCP4725:
@@ -49,7 +49,7 @@ class MCP4725:
             )
 if __name__ == "__main__":
     try:
-        dac = MCP4725(5.0, verbose=True)
+        dac = MCP4725(5.11, verbose=True)
 
         while True:
             try:
@@ -60,6 +60,7 @@ if __name__ == "__main__":
 
             except ValueError:
                 print("Вы ввели не число. Попробуйте ещё раз\n")
-
+    except KeyboardInterrupt:
+        print("\nПограмма завершилась")
     finally:
         dac.deinit()
