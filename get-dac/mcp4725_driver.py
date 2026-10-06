@@ -12,6 +12,7 @@ class MCP4725:
             self.verbose = verbose
             self.dynamic_range = dynamic_range
     def deinit(self):
+        self.set_number(0)
         self.bus.close()
     def set_number(self, number):
         if not isinstance(number, int):
