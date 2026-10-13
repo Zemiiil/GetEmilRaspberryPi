@@ -83,11 +83,15 @@ if __name__ == "__main__":
 
     try:
         adc = R2R_ADC(3.16, compare_time=0.01, verbose=True)
-
-        while True:
-            voltage = adc.get_sc_voltage()
-            print(f"Напряжение потенциометра: {voltage:.3f} В")
-
+        metod=int(input("Напиши 1 если надо методом sequential_counting или 0 если надо successive_approximation: ")
+        if metod == 1:
+            while True:
+                voltage = adc.get_sc_voltage()
+                print(f"Напряжение потенциометра: {voltage:.3f} В")
+        else if metod==0:
+            while True:
+                voltage = adc.get_sar_voltage()
+                print(f"Напряжение потенциометра: {voltage:.3f} В")
     except KeyboardInterrupt:
         print("\nИзмерение остановлено")
 
