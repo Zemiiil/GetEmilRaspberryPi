@@ -51,7 +51,32 @@ class R2R_ADC:
             )
 
         return voltage
+    def successive_approximation_adc(self):
+        number = 0
+        for i in range 8:
+            candidate = number | (1 << 7-i)
+            self.number_to_dac(candidate)
+            time.sleep(self.compare_time)
+            comparator_value = GPIO.input(self.comp_gpio)
+            if comparator_value == 0:
+            number = candidate
+            if self.verbose:
+                print(
+                    f"Проверяем код: {candidate}, "
+                    f"текущий результат: {number}, "
+                    f"компаратор: {comparator_value}"
+                )
+        self.number_to_dac(number)
+        return number
+    def get_sar_voltage(self):
+        number = self.successive_approximation_adcc()
+        voltage = number / 255 * self.dynamic_range
 
+        if self.verbose:
+            print(
+                f"Код АЦП: {number}, "
+                f"измеренное напряжение: {voltage:.3f} В"
+            )
 
 if __name__ == "__main__":
     adc = None
