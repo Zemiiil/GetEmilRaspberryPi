@@ -14,7 +14,7 @@ def plot_voltage_vs_time(time_values, voltage_values, max_voltage):
     plt.xlim(0, max(time_values) if time_values else 1)
     plt.ylim(0, max_voltage)
     plt.grid(True, which="both", alpha=0.3)
-    plt.legend(fontsize=8, loc="best")й
+    plt.legend(fontsize=8, loc="best")
     plt.tight_layout()
     plt.show()
 def plot_sampling_period_hist(time_values):
@@ -26,7 +26,7 @@ def plot_sampling_period_hist(time_values):
         print("Недостаточно измерений для гистограммы")
         return
     plt.figure(figsize=(10, 6))
-    plt.hist(sampling_periods)
+    plt.hist(sampling_periods, rwidth=0.9)
     plt.title("Распределение периодов измерений")
     plt.xlabel("Время между измерениями, с")
     plt.ylabel("Количество измерений")

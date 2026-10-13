@@ -37,7 +37,7 @@ class R2R_ADC:
             time.sleep(self.compare_time)
             comparator_value = GPIO.input(self.comp_gpio)
             if comparator_value == 1:
-                return number
+                return max(number-1,0)
         return 255
 
     def get_sc_voltage(self):
@@ -77,7 +77,7 @@ class R2R_ADC:
                 f"Код АЦП: {number}, "
                 f"измеренное напряжение: {voltage:.3f} В"
             )
-
+        return voltage
 if __name__ == "__main__":
     adc = None
 
