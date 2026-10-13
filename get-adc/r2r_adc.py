@@ -16,7 +16,7 @@ class R2R_ADC:
         GPIO.setup(self.comp_gpio, GPIO.IN)
 
     def deinit(self):
-        GPIO.output(self.gpio_bits, 0)
+        GPIO.output(self.bits_gpio, 0)
         GPIO.cleanup()
 
     def number_to_dac(self, number):
@@ -53,13 +53,13 @@ class R2R_ADC:
         return voltage
     def successive_approximation_adc(self):
         number = 0
-        for i in range 8:
+        for i in range (8):
             candidate = number | (1 << 7-i)
             self.number_to_dac(candidate)
             time.sleep(self.compare_time)
             comparator_value = GPIO.input(self.comp_gpio)
             if comparator_value == 0:
-            number = candidate
+                number = candidate
             if self.verbose:
                 print(
                     f"Проверяем код: {candidate}, "
@@ -69,7 +69,7 @@ class R2R_ADC:
         self.number_to_dac(number)
         return number
     def get_sar_voltage(self):
-        number = self.successive_approximation_adcc()
+        number = self.successive_approximation_adc()
         voltage = number / 255 * self.dynamic_range
 
         if self.verbose:
@@ -82,13 +82,13 @@ if __name__ == "__main__":
     adc = None
 
     try:
-        adc = R2R_ADC(3.16, compare_time=0.01, verbose=True)
-        metod=int(input("Напиши 1 если надо методом sequential_counting или 0 если надо successive_approximation: ")
-        if metod == 1:
+        adc = R2R_ADC(3.297, compare_time=0.0001)
+        metod=int(input("Напиши 0 если надо методом sequential_counting или 1 если надо successive_approximation: "))
+        if metod == 0:
             while True:
                 voltage = adc.get_sc_voltage()
                 print(f"Напряжение потенциометра: {voltage:.3f} В")
-        else if metod==0:
+        if metod==1:
             while True:
                 voltage = adc.get_sar_voltage()
                 print(f"Напряжение потенциометра: {voltage:.3f} В")
