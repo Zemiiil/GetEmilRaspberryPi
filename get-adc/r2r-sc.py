@@ -1,6 +1,7 @@
 import time
 from r2r_adc import R2R_ADC
 from adc_plot import plot_voltage_vs_time
+from adc_plot import plot_sampling_period_hist
 dynamic_range = 3.16
 duration = 3.0
 voltage_values = []
@@ -21,11 +22,12 @@ try:
 
     print(f"Всего измерений: {len(voltage_values)}")
     if voltage_values:
-    plot_voltage_vs_time(
-        time_values,
-        voltage_values,
-        dynamic_range
-    )
+        plot_voltage_vs_time(
+            time_values,
+            voltage_values,
+            dynamic_range
+        )
+        plot_sampling_period_hist(time_values)
 except KeyboardInterrupt:
     print("\nПограмма завершилась")
 
