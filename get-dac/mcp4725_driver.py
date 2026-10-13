@@ -2,7 +2,7 @@
 import smbus
 
 class MCP4725:
-    def __init__(self, dynamic_range, address=0x61, verbose = True):
+    def __init__(self, dynamic_range, address=0x61, verbose = False):
             self.bus = smbus.SMBus(1)
         
             self.address = address
