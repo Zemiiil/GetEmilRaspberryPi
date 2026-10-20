@@ -37,12 +37,12 @@ class R2R_ADC:
             time.sleep(self.compare_time)
             comparator_value = GPIO.input(self.comp_gpio)
             if comparator_value == 1:
-                return max(number-1,0)
+                return number
         return 255
 
     def get_sc_voltage(self):
         number = self.sequential_counting_adc()
-        voltage = number / 255 * self.dynamic_range
+        voltage = number / 255 * self.dynamic_range-0.0065
 
         if self.verbose:
             print(
@@ -82,7 +82,7 @@ if __name__ == "__main__":
     adc = None
 
     try:
-        adc = R2R_ADC(3.297, compare_time=0.0001)
+        adc = R2R_ADC(3.333, compare_time=0.0001, verbose=False)
         metod=int(input("Напиши 0 если надо методом sequential_counting или 1 если надо successive_approximation: "))
         if metod == 0:
             while True:

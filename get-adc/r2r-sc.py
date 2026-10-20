@@ -47,7 +47,3 @@ try:
         plot_sampling_period_hist(time_values)
 except KeyboardInterrupt:
     print("\nПограмма завершилась")
-
-finally:
-    if adc is not None:
-        adc.deinit()
