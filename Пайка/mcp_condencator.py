@@ -1,13 +1,7 @@
-import os
-import sys
 import time
 
 import numpy as np
 import pandas as pd
-
-# Модули mcp3021_driver и adc_plot лежат в папке get-adc
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-sys.path.append(os.path.join(BASE_DIR, "..", "get-adc"))
 
 from mcp3021_driver import MCP3021
 from adc_plot import plot_voltage_vs_time
@@ -40,9 +34,8 @@ try:
             "voltage_V": np.array(voltage_values),
             "measure_time_s": np.array(time_elapsed),
         })
-        csv_path = os.path.join(BASE_DIR, "lab.csv")
-        data.to_csv(csv_path, index=False)
-        print(f"Данные сохранены в {csv_path}")
+        data.to_csv("lab.csv", index=False)
+        print("Данные сохранены в lab.csv")
 
         plot_voltage_vs_time(
             time_values,
