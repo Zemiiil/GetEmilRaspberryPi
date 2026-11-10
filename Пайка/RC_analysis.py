@@ -42,7 +42,7 @@ def level_tau(tt, uu, frac, rising):
 
 
 FIT_T = 30.0                 # с, основной участок аппроксимации (≈ 3τ)
-FIT_T_SYS = (20.0, 40.0)     # с, участки для оценки систематической погрешности
+FIT_T_SYS = np.arange(20.0, 40.1, 2.5)  # с, границы участков 0–T для оценки систематической погрешности
 
 
 def lin_mnk(x, y):
@@ -79,9 +79,9 @@ def fit_ln(tt, uu, t_max, charge):
 
 def tau_with_errors(tt, uu, charge):
     main = fit_ln(tt, uu, FIT_T, charge)
-    t1, t2 = (fit_ln(tt, uu, T, charge)["tau"] for T in FIT_T_SYS)
-    main["tau_20"], main["tau_40"] = t1, t2
-    main["sigma_sys"] = abs(t2 - t1) / 2
+    scan = np.array([fit_ln(tt, uu, T, charge)["tau"] for T in FIT_T_SYS])
+    main["scan"] = scan.tolist()
+    main["sigma_sys"] = float(scan.std(ddof=1))   # разброс τ при разных участках
     main["sigma"] = float(np.hypot(main["sigma_stat"], main["sigma_sys"]))
     return main
 
@@ -109,7 +109,7 @@ print(f"tau (37 %, разрядка) = {tau37:.3f} с, уровень {lvl37:.3f
 for name, f in (("зарядка", fc), ("разрядка", fd)):
     print(f"МНК {name}: tau = {f['tau']:.3f} с, U_inf = {f['U_inf']:.3f} В, "
           f"sigma_стат = {f['sigma_stat']:.4f} с, sigma_сист = {f['sigma_sys']:.3f} с "
-          f"(tau(20 с) = {f['tau_20']:.3f}, tau(40 с) = {f['tau_40']:.3f}), sigma = {f['sigma']:.3f} с")
+          f"(tau по участкам: {', '.join(f'{x:.3f}' for x in f['scan'])}), sigma = {f['sigma']:.3f} с")
 print(f"tau = {tau_fin:.3f} +- {sigma_fin:.3f} с; номинал {TAU_NOM:.1f} +- {TAU_NOM * delta_nom:.1f} с; "
       f"отличие {eps * 100:.1f} %")
 
@@ -122,9 +122,9 @@ results = {
     "u_dis_start": float(ud[0]), "u_dis_min": float(ud.min()),
     "tau63": float(tau63), "lvl63": float(lvl63),
     "tau37": float(tau37), "lvl37": float(lvl37),
-    "fit_T": FIT_T, "fit_T_sys": list(FIT_T_SYS),
-    "charge": {k: float(v) for k, v in fc.items()},
-    "discharge": {k: float(v) for k, v in fd.items()},
+    "fit_T": FIT_T, "fit_T_sys": FIT_T_SYS.tolist(),
+    "charge": {k: (v if isinstance(v, list) else float(v)) for k, v in fc.items()},
+    "discharge": {k: (v if isinstance(v, list) else float(v)) for k, v in fd.items()},
     "tau": float(tau_fin), "sigma": float(sigma_fin), "eps": float(eps),
     "tau_nom": TAU_NOM, "delta_nom": float(delta_nom),
     # выборка точек для таблицы: каждые 5 с от начала этапа
@@ -165,7 +165,7 @@ for name, tt, uu, f, charge, lvl, tl, lab, loc in (
     plt.savefig(f"{OUT_DIR}/fig_{name}.png", dpi=200)
 
     # полулогарифмический масштаб
-    m = tt <= FIT_T_SYS[1]
+    m = tt <= FIT_T_SYS[-1]
     y = np.log((f["U_inf"] - uu[m]) if charge else (uu[m] - f["U_inf"]))
     xf = np.array([0, FIT_T])
     plt.figure(figsize=(9, 4.8))
